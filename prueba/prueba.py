@@ -1,2 +1,4 @@
  
-print("hola muchachones este es una prueba de git") 
+def recorreLista(a):
+    for i in a:
+        print(i)
