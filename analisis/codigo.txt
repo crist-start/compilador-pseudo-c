@@ -1,0 +1,4 @@
+var int edad ; /**** hola gupo ***/
+var int capacidad ; /* como estan 
+amigos */
+print ( edad ) ;
