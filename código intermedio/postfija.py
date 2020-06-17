@@ -31,11 +31,11 @@ def convertirInfijaAPostfija(infija):
 
 e1 = ["(","y2","-","y1",")","/","(","x2","-","x1",")"]
 e2=['(','a','+','b',')','-','(','c','/','d',')','+','e']
-pf=convertirInfijaAPostfija(e2);
+pf=convertirInfijaAPostfija(e1);
 print(pf)
 
 def esVariable(var=""):
-    return var in ["a","b","c","d","e"]
+    return var in ["a","b","c","d","e",'x1','x2','y1','y2']
 def esOperador(op=""):
     return op in "+-*/^"
 def esTrigonometrica(tr=""):
@@ -60,6 +60,5 @@ def intermedio(postfija=[]):
             count=count+1
     return cod
 
-cod=intermedio(['a', 'b', '+', 'c', 'd', '/', '-', 'e','sin','+'])
-for i in cod:
-    print (i)
+#cod=intermedio(['a', 'b', '+', 'c', 'd', '/', '-', 'e','sin','+'])
+
