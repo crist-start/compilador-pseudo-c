@@ -17,7 +17,5 @@ def separaPrint(a=[]):
             pr.append(i)
             salida.append(pr)
             if(a[0]=='println'):
-                salida.append(['print','(','\n',')',';'])
+                salida.append(['print','(','"\\n"',')',';'])
     return salida;
-
-
