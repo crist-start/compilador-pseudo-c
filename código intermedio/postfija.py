@@ -29,11 +29,6 @@ def convertirInfijaAPostfija(infija):
         salida.append(pila.pop())
     return salida
 
-e1 = ["(","y2","-","y1",")","/","(","x2","-","x1",")"]
-e2=['(','a','+','b',')','-','(','c','/','d',')','+','e']
-pf=convertirInfijaAPostfija(e1);
-print(pf)
-
 def esVariable(var=""):
     return var in ["a","b","c","d","e",'x1','x2','y1','y2']
 def esOperador(op=""):
@@ -59,6 +54,3 @@ def intermedio(postfija=[]):
             pila.append("t"+str(count))
             count=count+1
     return cod
-
-#cod=intermedio(['a', 'b', '+', 'c', 'd', '/', '-', 'e','sin','+'])
-
