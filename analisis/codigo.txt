@@ -1,4 +1,12 @@
-var int edad ; /**** hola gupo ***/
-var int capacidad ; /* como estan 
-amigos */
-print ( edad ) ;
+var int edad ;/** hola **/
+var int capacidad ;
+var int altura ;
+print ( " dame tu altura " ) ;
+read ( altura ) ;
+print ( capacidad , " la capacidad es : " ) ;
+println ( edad ) ;
+print ( capacidad ) ;
+println ( " altura ", altura ) ;
+altura = 10 ;
+edad = altura ;  
+end ;
