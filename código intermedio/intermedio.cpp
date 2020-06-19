@@ -1,0 +1,12 @@
+print ( "en_estos_no_se_hizo_intermedio" ) ;
+x = d + e ;
+y = sin ( x ) ;
+print ( "en_estos_" ) ;
+print ( "si_se_hizo_intermedio" ) ;
+print ( "\n" ) ;
+t1 = y2 - y1 ;
+x = t1 * x2 ;
+t2 = d / e ;
+t3 = c + t2 ;
+t4 = b + t3 ;
+x = a + t4 ;
