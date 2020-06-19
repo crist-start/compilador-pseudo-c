@@ -1,0 +1,7 @@
+#Optimizador del Compilador
+LDA valor;
+ADD 1;
+STA valor;
+
+INC 1;
+
