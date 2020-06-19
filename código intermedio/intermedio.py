@@ -1,6 +1,86 @@
-import separaPrint as sp
-import postfija as pf
-import arbol
+def esCadena(a=""):
+    return a[0]=='"' and a[-1]=='"'
+
+def separaPrint(a=[]):
+    pr=['print','(']
+    salida=[]
+    for i in a:
+        if esCadena(i):
+            pr.append(i)
+        elif i==',':
+            pr.extend([')',';'])
+            salida.append(pr)
+            pr=['print','(']
+        elif i==')':
+            pr.append(i)
+        elif i==';':
+            pr.append(i)
+            salida.append(pr)
+            if(a[0]=='println'):
+                salida.append(['print','(','"\\n"',')',';'])
+    return salida;
+
+
+def expresionPostfija(a):
+    if a.der==None and a.izq==None:
+        return [a.dato]
+    else:
+        salida=[]
+        salida.extend(expresionPostfija(a.izq))
+        salida.extend(expresionPostfija(a.der))
+        salida.append(a.dato)
+        return salida
+    
+
+def intermedio(postfija):
+    pila,cod=[],[]
+    count=1
+    for i in postfija:
+        if i in ['+', '-', '*', '/', '^']:
+            op2=pila.pop()
+            temp=["t"+str(count),"=",pila.pop(),i,op2,";"]
+            cod.append(["var","t_dato","t"+str(count),";"])
+            cod.append(temp)
+            pila.append("t"+str(count))
+            count=count+1
+        elif i in ["sin","cos","tan"]:
+            temp=['t'+str(count),'=',i,'(',pila.pop(),')',';']
+            cod.append(temp)
+            pila.append("t"+str(count))
+            count=count+1
+        else:
+            pila.append(i)
+    return cod
+
+def enTabla(a,v):
+    for i in v:
+        if i.idV==a:
+            return True
+    return False
+
+def evaluaIds(a,v):
+    temp=[]
+    cont=0
+    for i in range(len(a)):
+        if a[i][0]=='var':
+            if enTabla(a[i][2],v):
+                dat='t'+str(int(a[i][2][-1])+1)
+                ant=a[i][2]
+                a[i][2]=dat
+                a[i+1][0]=dat
+                temp.append(Variable(dat,None,None,None))
+                for j in range(i+1,len(a)):
+                    for k in range(len(a[j])):
+                        if a[j][k]==ant:
+                            a[j][k]='_'+dat
+            else:
+                v.append(Variable(a[i][2],None,None,None))
+            cont=cont+1
+    for i in range (len(a)):
+        for j in range(len(a[i])):
+            if '_' in a[i][j]:
+                a[i][j]=a[i][j].replace('_','')
+                
 
 class Variable:
     def __init__(self,idV,tipo,val,dirM):
@@ -9,73 +89,12 @@ class Variable:
         self.val=val
         self.dirM=dirM
 
-
-var=[Variable('a','int','0',200)
-     ,Variable('b','int','0',201)
-     ,Variable('c','int','0',202)
-     ,Variable('d','int','0',203)
-     ,Variable('e','int','0',204)
-     ,Variable('y1','int','0',205)
-     ,Variable('y2','int','0',206)
-     ,Variable('x2','int','0',207)
-     ,Variable('x','int','0',208)]
-
-variables=[]
-for e in var:
-    variables.append(e.idV)
-def obtenerVar(a=""):
-    for i in var:
-        if i.idV==a:
-            return i
-
-def intermedio(a=[]):
-    intermedio=[];
+def asignarDir(a,v):
+    var=[]
     for i in a:
-        if i[0]=='print' or i[0]=='println':
-            prints=sp.separaPrint(i)
-            intermedio.extend(prints)
-        elif i[0] in variables and i[1]=='=':
-            if i[3]==';' or i[5]==';' or i[6]==';':
-                intermedio.append(i)
-            else:
-                ab=arbol.expresion(i[2:-1])
-                postfija=pf.expresionPostfija(ab)
-                #print(postfija)
-                inter=pf.intermedio(postfija,variables)
-                inter.pop(-2)
-                inter[-1][0]=i[0]
-                pf.evaluaIds(inter,variables)
-                var.extend(pf.asignarDir(inter,var[-1]))
-                intermedio.extend(inter)
-                for e in inter:
-                    if 't' in e[0]:
-                        ins=obtenerVar(e[0])
-                        if e[3]=='/':
-                            ins.tipo='float'
-                        elif obtenerVar(e[2]).tipo == obtenerVar(e[4]).tipo:
-                            ins.tipo=obtenerVar(e[2]).tipo
-                        else:
-                            ins.tipo='float'
-        elif i[0] != 'var':
-            intermedio.append(i)
-    return intermedio;
-
-cod=[]
-text=open('prueba.cpp','r')
-for i in text:
-    j=i.split(' ')
-    j[-1]=';'
-    cod.append(j)
-
-t1=intermedio(cod)
-
-interm=open('intermedio.cpp','w');
-
-for i in t1:
-    for j in i:
-        interm.write(j)
-        if j != ';':
-            interm.write(' ')
-    interm.write('\n')
-        
-interm.close()
+        if i[0]=='var':
+            c=Variable(i[2],i[1],0,v.dirM+1)
+            var.append(c)
+            v=c
+            a.remove(i)
+    return var

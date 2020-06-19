@@ -1,10 +1,3 @@
-'''aqui colocaran la ruta para poder importar sus archivos'''
-import sys
-sys.path.append('prueba/')
-sys.path.append('código intermedio/')
-sys.path.append('generación de codigo/')
-
-'''aqui importaran sus archivos para usar sus funciones'''
 import intermedio as cod_int
 import arbol
 
@@ -15,7 +8,6 @@ class Variable:
         self.val=val
         self.dirM=dirM
 
-'''aqui usaran las funciones que importaron'''
 
 var=[Variable('a','int','0',200)
      ,Variable('b','int','0',201)
@@ -27,39 +19,31 @@ var=[Variable('a','int','0',200)
      ,Variable('x2','int','0',207)
      ,Variable('x','int','0',208)]
 
-
+variables=[]
+for e in var:
+    variables.append(e.idV)
 def obtenerVar(a=""):
     for i in var:
         if i.idV==a:
             return i
-estado=True
-intermedio=[]
-a=[['var', 'int', 'x', ';']
-   ,['var', 'int', 'y', ';']
-   ,['var', 'int', 'y1', ';']
-   ,['print', '(', '"en estos no se hizo intermedio"', ')', ';']
-   ,['x', '=', 'd', '+', 'e', ';']
-   ,['y', '=', 'sin', '(', 'x', ')', ';']
-   ,['println', '(', '"en estos "', ',', '"si se hizo intermedio"', ')', ';']
-   ,['x', '=', '(', 'y2', '-', 'y1', ')', '*', 'x2', ';']
-   ,['x', '=', 'a', '+', '(', 'b', '+', '(', 'c', '+', '(', 'd', '/', 'e', ')', ')', ')', ';']
-   ]
 
-if estado:
+def intermedio(a=[]):
+    intermedio=[];
     for i in a:
         if i[0]=='print' or i[0]=='println':
             prints=cod_int.separaPrint(i)
             intermedio.extend(prints)
-        elif i[1]=='=':
+        elif i[0] in variables and i[1]=='=':
             if i[3]==';' or i[5]==';' or i[6]==';':
                 intermedio.append(i)
             else:
                 ab=arbol.expresion(i[2:-1])
                 postfija=cod_int.expresionPostfija(ab)
-                inter=cod_int.intermedio(postfija)
+                #print(postfija)
+                inter=cod_int.intermedio(postfija,variables)
                 inter.pop(-2)
                 inter[-1][0]=i[0]
-                cod_int.evaluaIds(inter,var)
+                cod_int.evaluaIds(inter,variables)
                 var.extend(cod_int.asignarDir(inter,var[-1]))
                 intermedio.extend(inter)
                 for e in inter:
@@ -73,6 +57,24 @@ if estado:
                             ins.tipo='float'
         elif i[0] != 'var':
             intermedio.append(i)
+    return intermedio;
 
-for i in intermedio:
-    print (i)
+cod=[]
+text=open('prueba.cpp','r')
+for i in text:
+    j=i.split(' ')
+    j[-1]=';'
+    cod.append(j)
+
+t1=intermedio(cod)
+
+interm=open('intermedio.cpp','w');
+
+for i in t1:
+    for j in i:
+        interm.write(j)
+        if j != ';':
+            interm.write(' ')
+    interm.write('\n')
+        
+interm.close()
