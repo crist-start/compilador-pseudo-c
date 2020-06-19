@@ -1,2 +1,0 @@
-PrevioError 002
-Error 002

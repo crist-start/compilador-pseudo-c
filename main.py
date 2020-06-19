@@ -59,4 +59,5 @@ for i in a:
     else:
         print("error")
         break;
+generador.var = var
 generador.GenerarCodigo(intermedio)
