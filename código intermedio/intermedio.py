@@ -1,11 +1,18 @@
-def esCadena(a=""):
+def esCad(a=""):
     return a[0]=='"' and a[-1]=='"'
 
-def separaPrint(a=[]):
+def esNum(a=""):
+    estado=True
+    for i in a:
+        if i not in '.0123456789-':
+            estado=False
+    return estado
+
+def separaPrint(a,v):
     pr=['print','(']
     salida=[]
     for i in a:
-        if esCadena(i):
+        if esCad(i) or esNum(i) or enTabla(i,v):
             pr.append(i)
         elif i==',':
             pr.extend([')',';'])
@@ -58,9 +65,8 @@ def enTabla(a,v):
             return True
     return False
 
-def evaluaIds(a,v):
+def addVar(a,v):
     temp=[]
-    cont=0
     for i in range(len(a)):
         if a[i][0]=='var':
             if enTabla(a[i][2],v):
@@ -68,18 +74,17 @@ def evaluaIds(a,v):
                 ant=a[i][2]
                 a[i][2]=dat
                 a[i+1][0]=dat
-                temp.append(Variable(dat,None,None,None))
+                v.append(Variable(dat,None,None,v[-1].dirM+1))
                 for j in range(i+1,len(a)):
                     for k in range(len(a[j])):
                         if a[j][k]==ant:
-                            a[j][k]='_'+dat
+                            a[j][k]='?'+dat
             else:
-                v.append(Variable(a[i][2],None,None,None))
-            cont=cont+1
+                v.append(Variable(a[i][2],None,None,v[-1].dirM+1))
     for i in range (len(a)):
         for j in range(len(a[i])):
-            if '_' in a[i][j]:
-                a[i][j]=a[i][j].replace('_','')
+            if '?' in a[i][j]:
+                a[i][j]=a[i][j].replace('?','')
                 
 
 class Variable:
@@ -89,12 +94,37 @@ class Variable:
         self.val=val
         self.dirM=dirM
 
-def asignarDir(a,v):
-    var=[]
-    for i in a:
-        if i[0]=='var':
-            c=Variable(i[2],i[1],0,v.dirM+1)
-            var.append(c)
-            v=c
-            a.remove(i)
-    return var
+def recorrerTab(tab,dato):
+    ret=[]
+    for i in dato:
+        tab.extend(i)
+        ret.append(tab)
+        tab=['\t']
+    return ret
+
+def obtenerVar(a,v):
+    for i in v:
+        if i.idV==a:
+            return i
+
+def analizaCodigo(inter,v):
+    for e in inter:
+        if 't' in e[0]:
+            ins=obtenerVar(e[0],v)
+            if e[3]=='/':
+                ins.tipo='float'
+            elif obtenerVar(e[2],v).tipo == obtenerVar(e[4],v).tipo:
+                ins.tipo=obtenerVar(e[2],v).tipo
+            else:
+                ins.tipo='float'
+        else:
+            tip=obtenerVar(e[0],v).tipo
+            if e[3]=='/' and tip=='float':
+                return True
+            elif obtenerVar(e[2],v).tipo == obtenerVar(e[4],v).tipo==tip:
+                return True
+            elif obtenerVar(e[2],v).tipo != obtenerVar(e[4],v).tipo and tip=='float':
+                return True
+            else:
+                return False
+            

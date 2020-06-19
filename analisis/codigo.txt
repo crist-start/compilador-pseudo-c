@@ -1,7 +1,9 @@
-var char edad ;   	 /* declaracion de variable tipo caracter */
-var string capacidad ;   /* declaracion de variable tipo cadena*/
+var string edad ;
+var string edades ;   	 /* declaracion de variable tipo caracter */ 
+var char capacidad ;   /* declaracion de variable tipo cadena*/
 var int altura ; 	 /* declaracion de variable tipo entera */
-var float dinero;        /* declaracion de variable tipo flotante */
+var float dinero;
+var int dias;        /* declaracion de variable tipo flotante */
 print ( " dame tu altura " ) ;
 read ( altura ) ;
 print ( capacidad , " la capacidad es : " ) ;
@@ -11,7 +13,11 @@ println ( edad ) ;
 print ( capacidad ) ;
 println ( " altura ", altura ) ;
 altura = 10 ;
-edad = altura ;
+dias = altura ;
+capacidad = " m " ;
+dinero = 10.2 ;
+edad = " veinte " ;
+edades = " veinte " menos uno " ;
 a = 2 * 5 + calificacion / materias ;
 sin a ;
 cos 10 ;
