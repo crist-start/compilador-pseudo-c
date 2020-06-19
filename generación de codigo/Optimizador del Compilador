@@ -5,10 +5,3 @@ STA valor;
 
 INC 1;
 
-def LeerCodigo(archivo): #Eliminar al final por que ya existe en programa
-	codigo = open(archivo,"r")
-	temp = codigo.read()
-	codigo.close()
-	codigo = temp.split("\n")
-	return codigo
-

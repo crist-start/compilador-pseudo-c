@@ -1,0 +1,6 @@
+LDA a;
+LDV 10;
+STA 205;
+LDV 5;
+STA 207;
+LDV 2;
