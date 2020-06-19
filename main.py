@@ -1,6 +1,7 @@
 '''aqui colocaran la ruta para poder importar sus archivos'''
 import sys
 sys.path.append('prueba/')
+sys.path.append('analisis')
 sys.path.append('código intermedio/')
 sys.path.append('generación de codigo/')
 
@@ -8,6 +9,7 @@ sys.path.append('generación de codigo/')
 import an_cod_int as es
 import arbol
 import programa2 as generador
+import tokeniza as ev
 
 class Variable:
     def __init__(self,idV,tipo,val,dirM):
@@ -30,34 +32,24 @@ var=[Variable('a','int','0',200)
      ,Variable('y','float','0',209)
      ]
 
-
-a=[['var', 'int', 'x', ';']
-   ,['var', 'int', 'y', ';']
-   ,['var', 'int', 'y1', ';']
-   ,['read', '(', 'a', ')', ';']
-   ,['print', '(', '"en estos no se hizo intermedio"', ')', ';']
-   ,['x', '=', 'd', '+', 'e', ';']
-   ,['y', '=', 'sin', '(', 'x', ')', ';']
-   ,['println', '(', '"en estos "', ',', '0.15', ')', ';']
-   ,['x', '=', '(', 'y2', '-', 'y1', ')', '*', 'x2', ';']
-   ,['y', '=', 'a', '+', '(', 'b', '+', '(', 'c', '+', '(', 'd', '/', 'e', ')', ')', ')', ';']
-   ,['for','(','c','=','1',';','5',')']
-   ,['{']
-   ,['read','(','a',')',';']
-   ,['a', '=', 'a', '*', '2', ';']
-   ,['print', '(', 'y2', ',', '112', ')', ';']
-   ,['}']
-   ]
-
-noError=True
+sc=[]
 intermedio=[]
 
+arch=open('analisis/codigoSC.txt','r')
+
+for i in arch:
+    i.replace('\n','')
+    intermedio.append(ev.tokeniza(i))
+    #intermedio.append(ev.tokeniza(i))
+
+'''noError=True
+
 estado=0
-for i in a:
+for i in sc:
     if noError:
         noError,estado=es.analizaCodigo(i,var,estado,noError,intermedio)
     else:
         print("error")
         break;
 generador.var = var
-generador.GenerarCodigo(intermedio)
+generador.GenerarCodigo(intermedio)'''
