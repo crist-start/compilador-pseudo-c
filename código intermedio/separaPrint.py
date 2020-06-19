@@ -17,12 +17,5 @@ def separaPrint(a=[]):
             pr.append(i)
             salida.append(pr)
             if(a[0]=='println'):
-                salida.append(['print','(','\n',')',';'])
+                salida.append(['print','(','"\\n"',')',';'])
     return salida;
-
-s=separaPrint(['println','(','"dato"',',','"dato2"',',','"dato3"',')',';'])
-t=separaPrint(['println','(','"dato"',')',';'])
-for i in s:
-    print (i)
-print(t[0])
-print(t[1])

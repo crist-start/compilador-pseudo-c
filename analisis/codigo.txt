@@ -1,4 +1,23 @@
-var int edad ; /**** hola gupo ***/
-var int capacidad ; /* como estan 
-amigos */
-print ( edad ) ;
+var char edad ;   	 /* declaracion de variable tipo caracter */
+var string capacidad ;   /* declaracion de variable tipo cadena*/
+var int altura ; 	 /* declaracion de variable tipo entera */
+var float dinero;        /* declaracion de variable tipo flotante */
+print ( " dame tu altura " ) ;
+read ( altura ) ;
+print ( capacidad , " la capacidad es : " ) ;
+for ( 10 = calidad ; 10 )
+{
+println ( edad ) ;
+print ( capacidad ) ;
+println ( " altura ", altura ) ;
+altura = 10 ;
+edad = altura ;
+a = 2 * 5 + calificacion / materias ;
+sin a ;
+cos 10 ;
+tan 44.2 ;
+a = cos ( b ) ;
+caracol = tan ( 10 ) ;
+simbolo = tan ( 10.5 ) ;
+}
+end ;
