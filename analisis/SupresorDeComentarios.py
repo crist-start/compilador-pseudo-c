@@ -15,9 +15,9 @@ def quitaComentarios ():
 
 
     # ------ codigo para almacenar el texto en una cadena ------------------
-    print("------ codigo recibido ------------")
+    #print("------ codigo recibido ------------")   ------------ quita el comentario para ver
     for cad in objeto:
-        print(cad)
+        #print(cad)                                 ------------ quita el comentario para ver
         cad2.append(cad)
     #print(cad2)
 
@@ -54,7 +54,7 @@ def quitaComentarios ():
     for ele in dic:
         cadsin += ele
         
-    print("-----codigo sin comentarios ------\n" + cadsin)
+    #print("-----codigo sin comentarios ------\n" + cadsin)             ------------ quita el comentario para ver
 
     #---------- gurdado del codigo sin comentarios en un txt ------------
 
@@ -62,9 +62,6 @@ def quitaComentarios ():
     algo.write(cadsin)
     algo.close()
 
-    algo = open("comentarios.txt", "w")
-    algo.write("comentario")
-    algo.close()
 #------------------------------------------
     return cadsin
 quitaComentarios()
