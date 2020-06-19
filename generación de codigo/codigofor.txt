@@ -8,11 +8,14 @@ for(x2 = 2; 7)
 t2 = x2 - x1;
 
 
-
-["for","(","x2" = 2; 7)
-{
-	a = a*2;
-	print(a)
-	
-}
-
+LDV ~inicio;
+STA ~var.dirM;
+#2 LDV ~fin;
+SUB ~var.dirM;
+JZ #1; ~FindeFor
+"Bloque"
+LDA ~var.dirM;
+ADD 1;
+STA ~var.dirM;
+JMP #2; ~EvaluacionFor
+#1

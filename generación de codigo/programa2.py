@@ -1,3 +1,6 @@
+def limpiar():
+	pass #Pendiente funcion de limpiar archivos a usar
+
 def ACompilador(instruccion):
 	Comp = open("Codigo.txt","a")
 	Comp.write("\n"+instruccion)
@@ -7,6 +10,17 @@ def Registro(cadena):
 	Reg = open("Registro.txt","a")
 	Reg.write("\n"+cadena)
 	Reg.close()
+
+def TokenACadena(token):
+	cadena = str(token)
+	cadena = cadena.replace("[","")
+	cadena = cadena.replace("]","")
+	cadena = cadena.replace("'","")
+	cadena = cadena.replace(",","")
+	cadena = cadena.replace(" ","")
+	cadena = cadena.replace("\\n","")
+	cadena = cadena.replace("\\t","")
+	return cadena
 
 def Leer(token):
 	cadena = ""
@@ -51,20 +65,20 @@ def ImprimirVariable(variable):
 def AsignarValVar(variable,valor):
 	cadena = "LDV {};".format(valor)
 	ACompilador(cadena)
-	cadena = "STA {};".format(variable.direccion)
+	cadena = "STA {};".format(variable.dirM)
 	ACompilador(cadena)
 
 def AsignarVarVar(var1,var2):
-	cadena = "LDA {};".format(var2.direccion)
+	cadena = "LDA {};".format(var2.dirM)
 	ACompilador(cadena)
-	cadena = "STA {};".format(var1.direccion)
+	cadena = "STA {};".format(var1.dirM)
 	ACompilador(cadena)
 
 def AsignarTrigon(token):
 	if token[4][0] in "0123456789":
 		dir = token[4]
 	else:
-		dir = token[4].direccion
+		dir = token[4].dirM
 	if token[2] == "sin":
 		cadena = "SIN {};".format(dir)
 	elif token[2] == "cos":
@@ -74,36 +88,58 @@ def AsignarTrigon(token):
 	else:
 		Error = "La funcion trigonometrica {} no es procesable.".format(token[2])
 		Registro(Error)
-		cadena "LDA {};".format(dir)
+		cadena = "LDA {};".format(dir)
 	ACompilador(cadena)
-	cadena = "STA {};".format(token[0].direccion)
+	cadena = "STA {};".format(token[0].dirM)
 
 def Aritmetica(token):
 	OP1 = token[2]
 	OP2 = token[4]
-	cadena = "LDA {};".format(OP1.direccion)
+	cadena = "LDA {};".format(OP1.dirM)
 	ACompilador(cadena)
 	if token[3] == "+":
-		cadena = "ADD {};".format(OP2.direccion)
+		cadena = "ADD {};".format(OP2.dirM)
 	elif token[3] == "-":
-		cadena = "SUB {};".format(OP2.direccion)
+		cadena = "SUB {};".format(OP2.dirM)
 	elif token[3] == "*":
-		cadena = "MUL {};".format(OP2.direccion)
+		cadena = "MUL {};".format(OP2.dirM)
 	elif token[3] == "/":
-		cadena = "DIV {};".format(OP2.direccion)
+		cadena = "DIV {};".format(OP2.dirM)
 	else:
 		Error = "El operando {} no se pudo utilizar para operar {} y {}.".format(token[3],OP1,OP2)
 		Registro(Error)
 		cadena = ""
 	ACompilador(cadena)
 	Resultado = token[0]
-	cadena = "STA {};".format(Resultado.direccion)
+	cadena = "STA {};".format(Resultado.dirM)
 	ACompilador(cadena)
 
-
-
 def ManejoFor(token):
-	pass
+	var = token[0][0]
+	inicio = int(token[0][1])
+	fin = int(token[0][2])
+	cadena = "LDV {};".format(inicio)
+	ACompilador(cadena)
+	cadena = "STA {};".format(var.dirM)
+	ACompilador(cadena)
+	cadena = "#2 LDV {};".format(fin)
+	ACompilador(cadena)
+	cadena = "SUB {};".format(var.dirM)
+	ACompilador(cadena)
+	cadena = "JZ #1;"
+	ACompilador(cadena)
+	for renglon in range(1,len(token)):
+		EvaluarInstruccion(token[renglon])
+	cadena = "LDA {};".format(var.dirM)
+	ACompilador(cadena)
+	cadena = "ADD 1;"
+	ACompilador(cadena)
+	cadena = "STA {};".format(var.dirM)
+	ACompilador(cadena)
+	cadena = "JMP #2;"
+	ACompilador(cadena)
+	cadena = "#1"
+	ACompilador(cadena)
 
 def EvaluarInstruccion(token):
 	if token[0] == "print":
@@ -123,15 +159,35 @@ def EvaluarInstruccion(token):
 				AsignarVarVar(token[0],token[2])
 		else:
 			Aritmetica(token)
-	elif #CondicionFor:
-		pass
 	else:
+		Error = "El la orden {} del token {} no se pudo manejar.".format(token[0],TokenACadena(token))
+		Registro(Error)
 		pass
 
 def GenerarCodigo(CodigoIntermedio):
+	tokensfor=[]
+	dentroFor = False
 	for renglon in range(0,len(CodigoIntermedio)):
-		if "condicionfor":
-			pass #funcionfor
-		else:
-			EvaluarInstruccion(CodigoIntermedio[renglon])
-			#Funcion pendiente para imprimir token (instr = CodigoIntermedio[renglon])
+		if dentroFor == True:
+			if CodigoIntermedio[renglon][0] == "{":
+				pass
+			elif CodigoIntermedio[renglon][0] == "}":
+				dentroFor = False
+				ManejoFor(tokensfor)
+				pass
+			elif ((CodigoIntermedio[renglon][0] == "\t") or (CodigoIntermedio[renglon][0] == "\\t")):
+				temp = CodigoIntermedio[renglon][1:]
+				tokensfor.append(temp)
+			else:
+				Error = "El token {} no se pudo manejar".format(TokenACadena(CodigoIntermedio[renglon]))
+				Registro(Error)
+		elif dentroFor == False:
+			if CodigoIntermedio[renglon][0] == "for":
+				t = CodigoIntermedio[renglon]
+				temp = [t[renglon][2],t[renglon][4],t[renglon][6]]
+				tokensfor.append(temp)
+			else:
+				EvaluarInstruccion(CodigoIntermedio[renglon])
+				print("{} evaluada".format(TokenACadena(CodigoIntermedio[renglon])))
+	cadena = "END;"
+	ACompilador(cadena)
