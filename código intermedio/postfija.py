@@ -1,24 +1,12 @@
-
-def convertirInfijaAPostfija(infija):
-    '''Convierte una expresión infija a una posfija, devolviendo una lista.'''
-    pila = []
-    salida = []
-    for e in infija:
-        if e == '(':
-            pila.append(e)
-        elif e == ')':
-            while pila[len(pila) - 1 ] != '(':
-                salida.append(pila.pop())
-            pila.pop()
-        elif e in ['+', '-', '*', '/', '^']:
-            while (len(pila) != 0) and obtenerPrioridadOperador(e) >= obtenerPrioridadOperador(pila[len(pila) - 1]):
-                salida.append(pila.pop())
-            pila.append(e)
-        else:
-            salida.append(e)
-    while len(pila) != 0:
-        salida.append(pila.pop())
-    return salida
+def expresionPostfija(a):
+    if a.der==None and a.izq==None:
+        return [a.dato]
+    else:
+        salida=[]
+        salida.extend(expresionPostfija(a.izq))
+        salida.extend(expresionPostfija(a.der))
+        salida.append(a.dato)
+        return salida
 
 def intermedio(postfija,var):
     pila,cod=[],[]
@@ -40,72 +28,41 @@ def intermedio(postfija,var):
             count=count+1
     return cod
 
-class nodoB:
-    def __init__(self,izq,dato,der):
-        self.izq=izq
-        self.der=der
-        self.dato=dato
-def esId(a=""):
-    return a[0] in "_abcdefghi"
-def prioridad(a=''):
-    if a in '+-':
-        return 1
-    elif a in '*/':
-        return 2
-    elif a in '^':
-        return 3
-def arbolExpresion(a=[]):
-    nodo=nodoB(None,None,None)
-    temp=nodo
-    c=0
-    while c < len(a):
-        if nodo.dato==None:
-            if a[c] in ['+','-','*','/','^','sin','cos','tan']:
-                nodo.dato=a[c]
-            elif esId(a[c]):
-                nodo.izq=nodoB(None,a[c],None)
-            elif a[c]=='(':
-                cont=1
-                exp=[]
-                while cont!=0 and c != len(a):
-                    c=c+1
-                    exp.append(a[c])
-                    if a[c]=='(':
-                        cont=cont+1
-                    if a[c]==')':
-                        cont=cont-1
-                exp.pop()
-                print(exp)
-                nodo.izq=arbolExpresion(exp)
-        elif nodo.dato in ['+','-','*','/','^','sin','cos','tan']:
-            if esId(a[c]):
-                nodo.der=nodoB(None,a[c],None)
-            elif a[c]=='(':
-                cont=1
-                exp=[]
-                while cont!=0 and c != len(a):
-                    c=c+1
-                    exp.append(a[c])
-                    if a[c]=='(':
-                        cont=cont+1
-                    if a[c]==')':
-                        cont=cont-1
-                exp.pop()
-                print(exp)
-                nodo.der=arbolExpresion(exp)
-        c=c+1            
-    return nodo;
+def evaluaIds(a=[],v=[]):
+    inter=[]
+    for i in range(len(a)):
+        if a[i][0]=='var':
+            if a[i][2] in v:
+                dat='t'+str(int(a[i][2][-1])+1)
+                ant=a[i][2]
+                a[i][2]=dat
+                a[i+1][0]=dat
+                v.append(dat)
+                for j in range(i+1,len(a)):
+                    for k in range(len(a[j])):
+                        if a[j][k]==ant:
+                            a[j][k]='_'+dat
+            else:
+                v.append(a[i][2])
+    for i in range (len(a)):
+        for j in range(len(a[i])):
+            if '_' in a[i][j]:
+                a[i][j]=a[i][j].replace('_','')
+                
 
-def expresionPostfija(a=nodoB(None,None,None)):
-    if a.der==None:
-        return a.dato
-    else:
-        salida=[]
-        salida.extend(expresionPostfija(a.izq))
-        salida.extend(expresionPostfija(a.der))
-        salida.append(a.dato)
-        return salida
+class Variable:
+    def __init__(self,idV,tipo,val,dirM):
+        self.idV=idV
+        self.tipo=tipo
+        self.val=val
+        self.dirM=dirM
 
-a=arbolExpresion(['(','a','-','b',')','/','(','c','-','d',')'])
-post=expresionPostfija(a)
-inter=intermedio(post,['a','b','c','d'])
+def asignarDir(a,v):
+    var=[]
+    for i in a:
+        if i[0]=='var':
+            c=Variable(i[2],i[1],0,v.dirM+1)
+            var.append(c)
+            v=c
+            a.remove(i)
+    return var
