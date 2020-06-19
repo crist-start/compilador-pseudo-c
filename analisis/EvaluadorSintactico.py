@@ -108,7 +108,7 @@ def evaluadorSintactico():
 
 
     def evaluardeclaracion(cad):
-        
+        bander = False
         if (tokens[1] in tiposDatos):
             if (not tokens[2][0] in alfabetoNA and not tokens[2] in palabrasReservadas and tokens [3]==';' ):
                 #print ("esta bien")
@@ -118,6 +118,7 @@ def evaluadorSintactico():
         return(bander)
         
     def evaluarfor(cad):
+        bander = False
         if (len(tokens)== 8 and tokens[1]== '(' and tokens[3]== '=' and tokens[5] == ';' and tokens[-1] == ')'
             and (esId(tokens[2]) or esEntero(tokens[2]))and (esId(tokens[4]) or esEntero(tokens[4]))and (esId(tokens[6]) or esEntero(tokens[6]))):
             #print ('esta bien el for')
@@ -128,6 +129,7 @@ def evaluadorSintactico():
         return(bander)
 
     def evaluarprint(cad):
+        bander = False
         if (tokens[1] == '(' and tokens[-2]== ')' ):
             if (tokens[2]== '"'and not ',' in renglon and tokens[-3]=='"' and len(tokens)==7):
                 bander = True
@@ -144,6 +146,7 @@ def evaluadorSintactico():
         return(bander)
 
     def evaluarread(cad):
+        bander = False
         if (tokens[1] == '(' and tokens[-2]== ')' and len(tokens)==5 and tokens[-3] == tokens[2]):
              bander = True
             #print('Esta bien')
@@ -152,6 +155,7 @@ def evaluadorSintactico():
         return(bander)
 
     def evaluarend(cad):
+        bander = False
         if (tokens[1] == ';'):
             bander = True 
             #print('Esta bien')
@@ -160,6 +164,7 @@ def evaluadorSintactico():
         return(bander)
 
     def esFor(cad):
+        hayFor = False
         if (tokens[0] == 'for'):
             #if(evauarfor(tokens) == True
                 hayFor = True
@@ -172,6 +177,7 @@ def evaluadorSintactico():
         return hayFor
 
     def evaluarAsignacion(cad):
+        bander = False
 
         if (len(tokens)== 4 ):
             if(esEntero(tokens[2]) or esFlotante(tokens[2]) or esId(tokens[2])): #a = 10.1 ; o a = 10 ; o a = edad ;
@@ -180,7 +186,7 @@ def evaluadorSintactico():
             else:        
                 bander = False
                 
-        elif (esOperador(tokens[3]) and not len(tokens) == 5 and not (tokens[2] in funcionesAridmeticas)):
+        elif (esOperador(tokens[3]) and not len(tokens) == 5 and not (tokens[2] in funcionesAridmeticas)): # a = a * b / 10 * var
              #print("entro")
              i=2
              while(i<len(tokens) and not tokens[i-1] == ';' ):
@@ -193,12 +199,25 @@ def evaluadorSintactico():
                      
                  else:
                      bander = False
-        elif(len(tokens)== 7 and tokens[2] in funcionesAridmeticas ):
+        elif(len(tokens)== 7 and tokens[2] in funcionesAridmeticas ): # a = cos ( 10 ) o a = cos ( c )
             if (tokens[3]== '(' and tokens[5] == ')' and (esEntero(tokens[4]) or esFlotante(tokens[4]) or esId(tokens[4]))):
                 #print("Entro")
                 bander= True
             else:
-                bander = False                    
+                bander = False
+                
+        elif(tokens[2]== '"' and tokens[-2]== '"' ):
+            j=3
+            if( len(tokens) == 6  and tokens[3]!= '"'):
+                bander = True
+            
+            elif not(len(tokens)== 6):
+                print ("entro")
+                for j in range (len(tokens)-3):
+                    
+                    if not(tokens[j] == '"' ):
+                        bander = True
+        
         else:       
                 bander = False
                 
@@ -206,7 +225,7 @@ def evaluadorSintactico():
 
 
     def evaluarCodigo(codigosc):
-        sinErrores = True
+        sinErrores = False
         dentroFor = False
                 
         if (tokens[-1] == ';'):
@@ -294,10 +313,11 @@ def evaluadorSintactico():
     sinErrores = True
     #print(programa)
     cont =1
+    
     for renglon in programa:
         #if (interrupcion == False):
-            #print(renglon[0:-1])               # ------------- Quita el  # de comentario de esta linea para ver la cadena
-        #while (renglon!="end;"):        
+        #print(renglon[:])               # ------------- Quita el  # de comentario de esta linea para ver la cadena
+        if(renglon!="end;"):        
             tokens = tokeniza(renglon)
             #print(tokens)                     #  ------------- Quita el  # de comentario de esta linea para ver la cadena en tokes
             dentroDelFor == False
