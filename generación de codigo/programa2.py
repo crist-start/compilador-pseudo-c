@@ -1,7 +1,7 @@
 def ACompilador(instruccion):
 	Comp = open("Codigo.txt","a")
 	Comp.write("\n"+instruccion)
-	Comp.close
+	Comp.close()
 
 def Registro(cadena):
 	Reg = open("Registro.txt","a")

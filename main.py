@@ -7,6 +7,7 @@ sys.path.append('generación de codigo/')
 '''aqui importaran sus archivos para usar sus funciones'''
 import intermedio as cod_int
 import arbol
+import programa2 as generador
 
 class Variable:
     def __init__(self,idV,tipo,val,dirM):
@@ -76,3 +77,5 @@ if estado:
 
 for i in intermedio:
     print (i)
+
+generador.GenerarCodigo(intermedio)
