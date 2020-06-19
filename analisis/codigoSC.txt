@@ -2,22 +2,24 @@ var string edad ;
 var string edades ;   	  
 var char capacidad ;   
 var int altura ; 	 
-var float dinero;
-var int dias;        
-print ( " dame tu altura " ) ;
-read ( altura ) ;
-print ( capacidad , " la capacidad es : " ) ;
-for ( 10 = calidad ; 10 )
-{
-println ( edad ) ;
-print ( capacidad ) ;
-println ( " altura ", altura ) ;
-altura = 10 ;
+var float dinero ;
+var int dias ;
+var char c;
+c = "  a  " ;
+altura = 5 ;
 dias = altura ;
 capacidad = " m " ;
 dinero = 10.2 ;
 edad = " veinte " ;
-edades = " veinte " menos uno " ;
+edades = " veinte  menos uno " ;         
+print ( " dame tu altura " ) ;
+read ( altura ) ;
+print ( capacidad , " la capacidad es : " ) ;
+println ( edad ) ;
+print ( capacidad ) ;
+println ( " altura ", altura ) ;
+for ( calidad = 10; 5 )
+{
 a = 2 * 5 + calificacion / materias ;
 sin a ;
 cos 10 ;

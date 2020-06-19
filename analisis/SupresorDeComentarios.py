@@ -28,7 +28,7 @@ def quitaComentarios ():
 
     #------------------------------------------------------------------
     #-------- codigo para quitar los comentarios----------------------
-#def quitaComentarios (cad):
+    #def quitaComentarios (cad):
     while (elemento < len(cad)): # 
     #for elemento in range (len(cad)):
         
@@ -54,7 +54,7 @@ def quitaComentarios ():
     for ele in dic:
         cadsin += ele
         
-    #print("-----codigo sin comentarios ------\n" + cadsin)             ------------ quita el comentario para ver
+    #print("-----codigo sin comentarios ------\n" + cadsin)             #------------ quita el comentario para ver
 
     #---------- gurdado del codigo sin comentarios en un txt ------------
 
@@ -63,5 +63,5 @@ def quitaComentarios ():
     algo.close()
 
 #------------------------------------------
-    return cadsin
-quitaComentarios()
+    pass
+#quitaComentarios()
