@@ -1,6 +1,5 @@
 from SupresorDeComentarios import *
 def evaluadorSintactico():
-    
     quitaComentarios()
 
     # ------- Aqui inicia el manejo de los tokens -------------
@@ -215,7 +214,7 @@ def evaluadorSintactico():
                 bander = True
             
             elif not(len(tokens)== 6):
-                #print ("entro")
+                #print("entro")
                 for j in range (len(tokens)-3):
                     
                     if not(tokens[j] == '"' ):
@@ -371,7 +370,7 @@ def evaluadorSintactico():
                         
                     if (tokens[0] == '{' and evaluarCodigo(tokens) == True and not contlineafor == 101 ):                        
                         interrupcion = True
-                        print(" error en la linea ",cont," no se encontro la llave '{' despues del for ")
+                        print(" error en la linea ",cont," no se encontro la llave '{' de spues del for ")
                         print("\n")
                 
                 else:
@@ -387,5 +386,7 @@ def evaluadorSintactico():
     return(sinErrores)
 
 #evaluadorSintactico()            #   ------------- Quita el  # de comentario de esta linea para ejecutar el codigo
+
+
 
 

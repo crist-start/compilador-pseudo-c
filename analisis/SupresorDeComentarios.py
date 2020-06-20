@@ -64,4 +64,4 @@ def quitaComentarios ():
 
 #------------------------------------------
     pass
-#quitaComentarios()
+quitaComentarios()
