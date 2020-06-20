@@ -1,4 +1,4 @@
-
+import math 
 from EvaluadorSintactico import *
 
 if (evaluadorSintactico() == True):
@@ -24,11 +24,12 @@ if (evaluadorSintactico() == True):
         return caracter in "+-*;,.:!=%&/()[]<><=>=:="
 
     def esEntero(cad):
-        valido = True
-        for c in cad:
+        valido = True      
+        for c in cad:            
             if c not in "0123456789":
                 valido = False
         return valido
+    
     def esFlotante(cad):
         valido = True
         for c in cad:
@@ -118,6 +119,7 @@ if (evaluadorSintactico() == True):
             if (v.nombre == varNombre):
                 tipo = getTipo(varNombre)
                 if (valor != "null"):
+                    
                     if (tipo=="int"):
                         v.valor = int(valor)
                         
@@ -125,8 +127,7 @@ if (evaluadorSintactico() == True):
                         v.valor = '"' + valor[1:-1] + '"'
                        
                     elif (tipo=="string"):
-                        v.valor = '"' + valor[1:-1] + '"'
-                        
+                        v.valor = '"' + valor[1:-1] + '"'                        
                             
                     elif (tipo=="float"):
                         v.valor = float(valor)
@@ -187,7 +188,7 @@ if (evaluadorSintactico() == True):
                 bandera = True
             else:
                 bandera =False
-                print("nose encontro en la tabla o su valor no existe")
+                error=("nose encontro en la tabla o su valor no existe")
         #elif(tokens[2]) 
         elif (len(tokens)== 9):#print ( edad , " hola " ) ;
             if(esId(tokens[2]) and estaEnTabla(tokens[2]) and getValor(tokens[-3]) != "null" and tokens[3] == ','and tokens[4] == '"'):
@@ -218,26 +219,34 @@ if (evaluadorSintactico() == True):
     interrupcion = False
     sinErrores = True
     cont = 0
+    funTri = ["sin", "cos" , "tan"]
+    tem = ""
+    fin = False
+    cont =1
+    error = ""
+    seHizo = ""
     
     for renglon in programa:
         cont = cont + 1
-        #if (interrupcion == False):
+        if (interrupcion == False):
         #print(renglon[:])               # ------------- Quita el  # de comentario de esta linea para ver la cadena
-        if(renglon!="end;"):        
+        #while(fin == False):
+            if(renglon!="end;"):
+                fin = True
                 
             tokens = tokeniza(renglon)
-            print(tokens)
-            
+            #print(tokens)
+            #----------------- si la primer varible es un var ----------------
             if (tokens[0] =="var"):  # Es una declaracion de variable
                 if not(estaEnTabla(tokens[2])): 
                     #print(tokens[2],tokens[1])
-                    print("hecho")
+                    seHizo = ("hecho")
                     agregaVar(tokens[2], tokens[1], j)
                     j +=1
                 else:
                     interrupcion = True
-                    print("Esa variable ya esta declarada")
-            
+                    error = ("Esa variable ya esta declarada")
+            #----------------- si la primer varible es un for ----------------
             elif (tokens[0] == "for"): # forma for ( calidad = 10 ; 10 )
                 if (esEntero(tokens[-2])or esEntero(getValor(tokens[-2]))):
                     
@@ -245,68 +254,218 @@ if (evaluadorSintactico() == True):
                         agregaVar(tokens[2], 'int', j)
                         j +=1
                         if(esEntero(tokens[4])):
-                            print("hecho")
+                            seHizo =("hecho")
                             setValor(tokens[2], tokens[4])
                         elif(estaEnTabla(tokens[4])):
                              if( getTipo(tokens[4]) == getTipo(tokens[2])):
                                 if (getValor(tokens[4]) != "null"):
-                                    print("Hecho")
+                                    seHizo =("Hecho")
                                     setValor(tokens[2], getValor(tokens[4]))
                                 else:
                                     interrupcion = True
-                                    print(tokens[4],"esta bacia .")
+                                    error =(tokens[4],"esta bacia .")
                              else:
                                 interrupcion = True
-                                print ("no concordaron los tipos de las variables")
+                                error =("no concordaron los tipos de las variables")
                         elif not(estaEnTabla(tokens[4])):
                              interrupcion = True
-                             print("no existe la variable",tokens[4])
+                             error =("no existe la variable",tokens[4])
                         else:
                             interrupcion = True
-                            print("no es un entero")
+                            error =("no es un entero")
                     elif (estaEnTabla(tokens[2]) and getTipo(tokens[2] == int)):
                         if(esEntero(tokens[4])):
-                            print("hecho")
+                            seHizo =("hecho")
                             setValor(tokens[2], tokens[4])
                         elif(estaEnTabla(tokens[4])):
                              if( getTipo(tokens[4]) == getTipo(tokens[2])):
                                 if (getValor(tokens[4]) != "null"):
-                                    print("hecho")
+                                    seHizo =("hecho")
                                     setValor(tokens[2], getValor(tokens[4]))
                                 else:
                                     interrupcion = True
-                                    print("Esa variable esta bacia .")
+                                    error =("Esa variable esta bacia .")
                              else:
                                 interrupcion = True
-                                print ("no concordaron los tipos de las variables")
+                                error = ("no concordaron los tipos de las variables")
                         elif no(estaEnTabla(tokens[4])):
                              interrupcion = True
-                             print("no existe la variable")
+                             error =("no existe la variable")
                         else:
                             interrupcion = True
-                            print("no es un entero")
+                            error =("no es un entero")
                 else:
                     interrupcion = True
-                    print(tokens[-2], "no es un entero")
-                
-                        
+                    error =(tokens[-2], "no es un entero")
+                    
+            #----------------- si la primer varible es un print ----------------                        
             elif (tokens[0] == "print" or tokens[0] == "println"):
                 if (evaluarPrinte(tokens) == False):
                     interrupcion = True
-                    print(" no se encontro la variable ")
+                    error =(" no se encontro la variable ")
                 else:
-                    print("hecho")
+                    seHizo =("hecho")
+            #----------------- si la primer varible es un read ----------------
+
+            elif(tokens[0] == "read"):   #read ( altura ) ;
+                if not(estaEnTabla(tokens[2])):
+                    interrupcion = True
+                    error =(" no se encontro la variable ")
+                else:
+                    seHizo =("hecho")
+                    
+            #----------------- si la primer varible es una Funcion Trigonometrica ----------------                    
+            elif(tokens[0] in  funTri  and len(tokens) == 3): #sin a ;
+                if(estaEnTabla(tokens[1])):                 
+                    if(getValor(tokens[1]) != "null" and esEntero(str(getValor(tokens[1]))) or esEntero(str(getValor(tokens[1])))):
+                        seHizo =("hecho")                        
+                        
+                    else:
+                        interrupcion = True
+                        error =("la variable esta vacia")
                 
   
-                    
-                    
-                    
-                 
-                    
-            elif(esId(tokens[0]) and estaEnTabla(tokens[0])): # El primer token es un ID
-                if (tokens[1]=="="):
+                elif(esFlotante(tokens[1]) or esEntero(tokens[1])): #sin 3 ;
+                    seHizo =("hecho")
+                    interrupcion = False
+                
+                else:
+                    error =("la variable no existe");
+                    interrupcion = True
+                     
+            #----------------- si la primer varible es un = ----------------
+            if (len(tokens) >1 and tokens[1]=="="):
+                if(esId(tokens[0]) and estaEnTabla(tokens[0]) ):#and getValor(tokens[0])!= "null"  ): # El primer token es un ID
                     #print(type(tokens[2]))
-                    if (len(tokens)==4 and tokens[0] != tokens[2]): # Es de la forma "ID = valor;"
+                                        
+                    if (len(tokens)==4 ): # Es de la forma "ID = valor;"
+                        if(esId(tokens[2])and ( not esEntero(tokens[2]) or not esFlotante(tokens[2]))):
+                            if (estaEnTabla(tokens[2])):
+                                if (getTipo(tokens[2]) == getTipo(tokens[0])):
+                                    if ( getValor(tokens[2])!= "null" ):
+                                        seHizo =("hecho")
+                                        setValor(tokens[0], getValor(tokens[2]))
+                                    else:
+                                        interrupcion=True
+                                        error =("La variable ",tokens[2]," esta vacia")
+                                else:
+                                    interrupcion=True
+                                    error =(tokens[0] ," y ", tokens[2], "tienen tipos de datos diferentes")
+                            else:
+                                interrupcion=True
+                                error =("error var" ,(tokens[2]),"no existe")
+                                
+                        elif(esEntero(tokens[2]) or esFlotante(tokens[2])):                            
+                            if ( esFlotante(tokens[2]) == True  and getTipo(tokens[0]) ==  "float" or esEntero(tokens[2]) == True  and getTipo(tokens[0]) ==  "int" ):
+                                seHizo =("echo")
+                                setValor(tokens[0], tokens[2])                                
+                            else:
+                                interrupcion=True
+                                error =(tokens[0] ," y ", tokens[2], "tienen tipos de datos diferentes")
+                        else:
+                            error =(tokens[2],"no es una variable valida")
+                            
+                    elif (len(tokens) == 6 and tokens[2] == '"'  and tokens[-2] == '"' ) : # Es de la forma a = "cadena de cualquier extencion" ;
+                        if (getTipo(tokens[0]) == "string" or getTipo(tokens[0]) == "char" ):
+                            if (getTipo(tokens[0]) ==  "char"):
+                                
+                                if (len(tokens[3]) == 3 ):
+                                    seHizo =("hecho")
+                                    setValor(tokens[0], tokens[3])
+                                    
+                                else:
+                                    interrupcion = True
+                                    error =(tokens[3],"no tiene la extencion requerida para ser un char " )
+                                    
+                            elif (getTipo(tokens[0]) ==  "string"):
+                                
+                                    seHizo =("hecho")
+                                    setValor(tokens[0], tokens[3])
+                            else:
+                                interrupcion=True
+                                error =( tokens[3],"no es un carecter o una cadena ")
+                        else:
+                            interrupcion=True
+                            error =( tokens[0],"no es una cadena o un caracter ")
+                    
+                
+                    elif(len(tokens) == 7 and tokens[2] in funTri):
+                        #print(getTipo(tokens[4]))
+                        
+                        if(estaEnTabla(tokens[4])):
+                            #print("entro 2")
+                            if (getValor(tokens[4])!= "null"):
+                                #print(getTipo(tokens[4]))
+                                if(getTipo(tokens[4]) == "int" or getTipo(tokens[4]) == "float" ):
+                                    
+                                    if(tokens[2] == "sin"):
+                                        seHizo =("hecho")                                   
+                                        setValor(tokens[0], math.sin(getValor(tokens[4])))
+                                    elif(tokens[2] == "cos"):
+                                        seHizo =("hecho")
+                                        setValor(tokens[0], math.cos(getValor(tokens[4])))
+                                    elif(tokens[2] == "tan"):
+                                        seHizo =("hecho")
+                                        setValor(tokens[0], math.tan(getValor(tokens[4])))
+                                    else:
+                                        error =("fuera de rango")
+                                else:
+                                    error =("La variable ", tokens [4], " no es valida se esperaba un numero")
+                            else:
+                                error =( "la variable ",tokens[4]," Esta vacia")
+                                #print(getValor(tokens[4]))
+                        elif(esEntero(tokens[4])or esFlotante(tokens[4])):
+                                    if(tokens[2] == "sin"):
+                                        seHizo =("hecho")
+                                        setValor(tokens[0], math.sin(float(tokens[4])))
+                                    elif(tokens[2] == "cos"):
+                                        seHizo =("hecho")
+                                        setValor(tokens[0], math.cos(float(tokes[4])))
+                                    elif(tokens[2] == "tan"):
+                                        seHizo =("hecho")
+                                        setValor(tokens[0], math.tan(float(tokens[4])))
+                                    else:
+                                        error =("fuera de rango")
+                                
+                        else:
+                            error =("la variable ",tokens[4]," no esta declarada ")
+                            
+                        
+        if (interrupcion == True):
+                sinErrores = False
+                
+                print("---Error en el analsis sintactico----")
+                print(" hay un error en la lina : \n", cont, renglon[0:-1])
+                print("Descripcion ", error ,"\n")
+                
+                
+        interrupcion = False
+        cont = cont + 1
+        '''
+        print(tokens)
+        if (error != "" ):
+            print("Descripcion ", error ,"\n")
+        print(seHizo)
+        '''
+
+        error = ""
+        seHizo = ""
+        #else:
+        #    print("falta programar")
+    print("--- Tabla de variables ---")
+    for e in tablaVar:
+        print (e.nombre , e.tipo, e.valor, e.direccion )
+                 #funcionRead(tokens)
+    
+    '''
+                    
+                            
+                                
+                            
+                        
+                                
+                                    
+                                
                         if(esEntero(tokens[2]) or esFlotante(tokens[2])):
                             print("hecho")
                             setValor(tokens[0], tokens[2])
@@ -322,7 +481,8 @@ if (evaluadorSintactico() == True):
                             print("error Los tipos de datos no coinciden o no esta en la tabla de variables")
                     elif (tokens[2] == '"'and tokens[4] == '"'):
                         #print("entro")
-                        if (len(tokens) == 6 ): #and len(tokens[3]) == 3 ): Es de la forma a = "cadena de cualquier extencion" ;                            
+                        
+                        if (len(tokens) == 6 and getTipo(tokens[0]) ==  "char" or getTipo(tokens[0]) ==  "string"): #and len(tokens[3]) == 3 ): Es de la forma a = "cadena de cualquier extencion" ;                            
                             
                             if (getTipo(tokens[0]) ==  "char"):
                                 if (len(tokens[3]) == 3 ):
@@ -337,17 +497,14 @@ if (evaluadorSintactico() == True):
                                 interrupcion=True
                                 print( tokens[3],"no es la extencion requerida para ser un str ")
                         
-                    #elif (tokes ):
-                    #    setValor(tokens[0], tokens[3])
+                            elif (tokes ):
+                            setValor(tokens[0], tokens[3])'''
                         
                         
 
 
                 
                
-    for e in tablaVar:
-        print (e.nombre , e.tipo, e.valor, e.direccion )
-                 #funcionRead(tokens)
     
     '''
                 else: # Es id = exp  ej. c = a*b+d;                

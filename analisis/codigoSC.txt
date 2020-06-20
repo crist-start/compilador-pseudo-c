@@ -1,15 +1,28 @@
 var string edad ;
+var int cosa ;
 var string edades ;   	  
 var char capacidad ;   
 var int altura ; 	 
 var float dinero ;
 var int dias ;
-var char c;
+var char c ;
+var int araña ;
+var int a ;
+var float caracol ;
+var float simbolo ;
+var float casa ;
+casa = 80 ;
 c = "  a  " ;
-altura = 5 ;
+altura = 5.5 ;
+altura = 100 ;
+araña = 3 ;
+cosa = 4 ;
 dias = altura ;
 capacidad = " m " ;
-dinero = 10.2 ;
+capacidad = " manos " ;
+dinero = " h " ;
+dinero = 5.8 ;
+edad = cosa ;
 edad = " veinte " ;
 edades = " veinte  menos uno " ;         
 print ( " dame tu altura " ) ;
@@ -18,14 +31,15 @@ print ( capacidad , " la capacidad es : " ) ;
 println ( edad ) ;
 print ( capacidad ) ;
 println ( " altura ", altura ) ;
-for ( calidad = 10; 5 )
-{
-a = 2 * 5 + calificacion / materias ;
-sin a ;
+for ( calidad = 10; 100 )
+b = 2 * 5 + calificacion / materias ;
+sin araña ;
 cos 10 ;
 tan 44.2 ;
-a = cos ( b ) ;
+a = cos ( casa ) ;
 caracol = tan ( 10 ) ;
 simbolo = tan ( 10.5 ) ;
 }
+print ( " Hola mundo " ) ;
 end ;
+print ( " hola  " ) ;
