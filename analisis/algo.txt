@@ -12,4 +12,5 @@ a int 0 259
 caracol float 0.6483608274590866 260
 simbolo float 1.8498999934219273 261
 casa float 80.0 262
-calidad int 10 263
+b int null 263
+calidad int 10 264

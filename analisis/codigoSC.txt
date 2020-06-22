@@ -11,6 +11,7 @@ var int a ;
 var float caracol ;
 var float simbolo ;
 var float casa ;
+var int b;
 casa = 80 ;
 c = "  a  " ;   
 altura = 5.5 ;
@@ -33,7 +34,7 @@ print ( capacidad ) ;
 println ( " altura ", altura ) ;
 for ( calidad = 10; 100 )
 {
-b = 2 * 5 + calificacion / materias ;
+b = 2 * 5 + altura / 2 ;
 sin araña ;
 cos 10 ;
 tan 44.2 ;
