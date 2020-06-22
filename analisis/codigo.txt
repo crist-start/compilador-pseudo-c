@@ -1,9 +1,9 @@
-var string edad ;
-var int cosa ;
+var string edad ; /* esta es una variable de tipo cadena y su nombre es edad*/
+var int cosa ;    /* esta es una variable de tipo entera que se llama cosa*/
 var string edades ;   	  
-var char capacidad ;   
-var int altura ; 	 
-var float dinero ;
+var char capacidad ; /*esta es una variable de tipo caracter que almacena un caracter*/
+var int altura ;	 
+var float dinero ;  /* esta es una variable flotante que se llama dinero*/ 
 var int dias ;
 var char c ;
 var int araña ;
@@ -12,7 +12,7 @@ var float caracol ;
 var float simbolo ;
 var float casa ;
 casa = 80 ;
-c = "  a  " ;
+c = "  a  " ;   /* esta es una asignacion*/
 altura = 5.5 ;
 altura = 100 ;
 araña = 3 ;
@@ -32,6 +32,7 @@ println ( edad ) ;
 print ( capacidad ) ;
 println ( " altura ", altura ) ;
 for ( calidad = 10; 100 )
+{
 b = 2 * 5 + calificacion / materias ;
 sin araña ;
 cos 10 ;
