@@ -1,9 +1,9 @@
-var string edad ;
-var int cosa ;
+var string edad ; 
+var int cosa ;    
 var string edades ;   	  
-var char capacidad ;   
-var int altura ; 	 
-var float dinero ;
+var char capacidad ; 
+var int altura ;	 
+var float dinero ;   
 var int dias ;
 var char c ;
 var int araña ;
@@ -11,8 +11,9 @@ var int a ;
 var float caracol ;
 var float simbolo ;
 var float casa ;
+var int b;
 casa = 80 ;
-c = "  a  " ;
+c = "  a  " ;   
 altura = 5.5 ;
 altura = 100 ;
 araña = 3 ;
@@ -32,7 +33,8 @@ println ( edad ) ;
 print ( capacidad ) ;
 println ( " altura ", altura ) ;
 for ( calidad = 10; 100 )
-b = 2 * 5 + calificacion / materias ;
+{
+b = 2 * 5 + altura / 2 ;
 sin araña ;
 cos 10 ;
 tan 44.2 ;

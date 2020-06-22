@@ -9,11 +9,11 @@ if (evaluadorSintactico() == True):
         valor = ""
         direccion = 250
 
-        def __init__(self, n, t, v , d):
-            self.nombre = n
-            self.tipo = t
-            self.valor = v
-            self.direccion = d
+        def __init__(self, idV, tipo, val , dirM):
+            self.nombre = idV
+            self.tipo = tipo
+            self.valor = val
+            self.direccion = dirM
 
 
     # ------- Aqui inicia el manejo de los tokens -------------
@@ -386,7 +386,7 @@ if (evaluadorSintactico() == True):
                                 error =( tokens[3],"no es un carecter o una cadena ")
                         else:
                             interrupcion=True
-                            error =( tokens[0],"no es una cadena o un caracter ")
+                            error =( tokens[0],"no es de tipo cadena o de tipo caracter ")
                     
                 
                     elif(len(tokens) == 7 and tokens[2] in funTri):
@@ -435,7 +435,7 @@ if (evaluadorSintactico() == True):
                 sinErrores = False
                 
                 print("---Error en el analsis sintactico----")
-                print(" hay un error en la lina : \n", cont, renglon[0:-1])
+                print(" hay un error en la linea : \n", cont, renglon[0:-1])
                 print("Descripcion ", error ,"\n")
                 
                 
@@ -452,11 +452,14 @@ if (evaluadorSintactico() == True):
         seHizo = ""
         #else:
         #    print("falta programar")
-    print("--- Tabla de variables ---")
+    algo = open("algo.txt", "w")
+    algo.write(" -----Tabla de Variables ----- \n")
+    
     for e in tablaVar:
+        algo.write(str(e.nombre + " "  + e.tipo + " "+ str(e.valor) + " " + str(e.direccion + "\n") ))
         print (e.nombre , e.tipo, e.valor, e.direccion )
                  #funcionRead(tokens)
-    
+    algo.close()
     '''
                     
                             

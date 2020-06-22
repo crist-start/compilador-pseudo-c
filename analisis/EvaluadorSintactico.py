@@ -96,7 +96,7 @@ def evaluadorSintactico():
 
     #--------    aqui empieza la validacion del codigo       --------------
 
-    palabrasReservadas = ['print', 'println', 'for', 'end'  'read', 'var', 'int', 'float', 'string', 'char' , 'sin', 'cos','tan']
+    palabrasReservadas = ['print', 'println', 'for', 'end' , 'read', 'var', 'int', 'float', 'string', 'char' , 'sin', 'cos','tan']
 
     tiposDatos=['int', 'float', 'string','char']
 
@@ -115,6 +115,8 @@ def evaluadorSintactico():
             if (not tokens[2][0] in alfabetoNA and not tokens[2] in palabrasReservadas and tokens [3]==';' ):
                 #print ("esta bien")
                 bander = True
+            #else:
+                
         else:
             bander = False 
         return(bander)
@@ -238,7 +240,7 @@ def evaluadorSintactico():
                     #print ("esta bien el print")
                 else:
                     sinErrores = False
-                    #print ("esta mal el print")
+                    print ("esta mal el print")
                   
             if (tokens[0] == 'read'):
                 if (evaluarread(tokens) == True ):
@@ -246,15 +248,15 @@ def evaluadorSintactico():
                     #print("esta bien el read")
                 else:
                     sinErrores = False
-                    #print ("hubo error en el read")
+                    print ("hubo error en el read")
         
-            if (tokens[0] == 'end'):
-                if (evaluarend(tokens) == True ):
+            if (tokens[0] == 'end' ):
+                if (evaluarend(tokens) == True  and len(tokens) == 2):
                     sinErrores = True
                     #print("esta bien el end")
                 else:
                     sinErrores = False
-                    #print ("hubo error en el end")
+                    print ("hubo error en el end")
         
             if (tokens[0] == 'var'):
                 if (evaluardeclaracion(tokens) == True ):
@@ -262,12 +264,14 @@ def evaluadorSintactico():
                     #print("esta bien la declaracion")
                 else:
                     sinErrores = False
-                    #print ("hubo error la declaracion")
+                    print ("hubo error la declaracion de variable")
+                    
             if (len(tokens)== 3 and (tokens[0] == 'sin' or tokens[0] == 'cos' or tokens[0] == 'tan')):
                 if(esId(tokens[0]) == True or esEntero(tokens[0]) == True or esFlotante(tokens[0]) == True):
                     sinErrores = True
                     #print("esta bien la declaracion")
                 else:
+                    print("no cumple con la estencion necesaria")
                     sinErrores = False
             
                     
@@ -278,11 +282,15 @@ def evaluadorSintactico():
                  else:
                     #print("holaguapo")
                     sinErrores = False
-                    #print ("hubo error la asignacion ")
+                    print ("hubo error la asignacion ")
+
+            elif(not (tokens[0] in palabrasReservadas)):
+                print("Error", tokens[0] ,"no es una palabra reconocida")
+                sinErrores = False
                     
-        elif (len(tokens)== 1):
-            #print("holaguapo")
-            if (tokens[0] == '{' or tokens[0] == '}'):
+        elif(tokens[0] == '{' or tokens[0] == '}'):
+            
+            if(len(tokens)== 1):
                 if (dentroDelFor == True):
                     sinErrores = True
                     #print("esta bien la asignacion")
@@ -291,11 +299,23 @@ def evaluadorSintactico():
             else:                
                 sinErrores = False
                 #print ("hubo error la asignacion ")
+        
+        else:
+            
+            print("Error no se encontro ; o  la linea no tuvo los elementos requeridos")
+            sinErrores = False
+        '''elif(tokens[-1] != ';'):
+            print("Error no se encontro ;")
+            sinErrores = False
+            
+        
                 
 
         else:
-            #print("Error")
+            
+            print("Error ", tokens[0] ," no es una palabra reconocida")
             sinErrores = False
+        '''
         
             
               
@@ -314,12 +334,19 @@ def evaluadorSintactico():
     contadorfors = 0
     sinErrores = True
     #print(programa)
-    cont =1
+    cont = 0
+    fin = False
     
     for renglon in programa:
+        cont += 1
         #if (interrupcion == False):
         #print(renglon[:])               # ------------- Quita el  # de comentario de esta linea para ver la cadena
-        if(renglon!="end;"):        
+        if(fin == True):
+            print("no se toma en cuenta el codigo porque esta despues del END")
+            print(renglon[:])
+        if(fin == False):
+            if(renglon == "end ;\n"):
+                fin = True
             tokens = tokeniza(renglon)
             #print(tokens)                     #  ------------- Quita el  # de comentario de esta linea para ver la cadena en tokes
             dentroDelFor == False
@@ -332,7 +359,7 @@ def evaluadorSintactico():
                     if (evaluarCodigo(tokens) == False):
                         interrupcion = True
                         print("error en la linea" , cont)
-                    cont = cont + 1
+                    
                     #print("\n")
                     
                 elif (esFor(tokens) == True):
@@ -347,7 +374,7 @@ def evaluadorSintactico():
                     else:
                         interrupcion = True
                         print(" error en la linea" , cont)
-                    cont = cont + 1
+                    
                     #print("\n")
                 
                 elif( not tokens[0] == 'for' and dentroDelFor == True ):
@@ -355,7 +382,7 @@ def evaluadorSintactico():
                     if (evaluarCodigo(tokens) == False):
                         interrupcion = True
                         print(" error en la linea" , cont)
-                    cont = cont + 1
+                   
                     
                     #print("\n")
                     
@@ -378,9 +405,14 @@ def evaluadorSintactico():
                     print(" error no es una linea valida")
             contlineafor = contlineafor + 1
             if (interrupcion == True):
-                sinErrores = False
+                sinErrores = False                
                 print(renglon[0:-1])
+                print("---- Error en el analisis sintactico ----\n")
+            
+                
             interrupcion = False
+    
+    
             
     pass
     return(sinErrores)

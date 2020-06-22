@@ -1,0 +1,16 @@
+ -----Tabla de Variables ----- 
+edad string "veinte" 250
+cosa int 4 251
+edades string "veinte menos uno" 252
+capacidad char "m" 253
+altura int 100 254
+dinero float 5.8 255
+dias int 100 256
+c char "a" 257
+araña int 3 258
+a int 0 259
+caracol float 0.6483608274590866 260
+simbolo float 1.8498999934219273 261
+casa float 80.0 262
+b int null 263
+calidad int 10 264
