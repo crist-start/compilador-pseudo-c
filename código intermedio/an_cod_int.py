@@ -25,8 +25,8 @@ def analizaCodigo(i,var,estado,noError,intermedio):
             else:
                 intermedio.append(i)
         else:
-            ab=arbol.expresion(i[2:-1])
-            postfija=cod_int.expresionPostfija(ab)
+            #ab=arbol.expresion(i[2:-1])
+            postfija=cod_int.infija2Postfija(i[2:-1])
             inter=cod_int.intermedio(postfija)
             inter.pop(-2)
             inter[-1][0]=i[0]
@@ -34,16 +34,18 @@ def analizaCodigo(i,var,estado,noError,intermedio):
             for i in inter:
                 if i[0]=='var':
                     inter.remove(i)
+            noError=cod_int.analizaCodigo(inter,var)
             if estado==1:
                 intermedio.extend(cod_int.recorrerTab(tab,inter))
             else:
                 intermedio.extend(inter)
-            noError=cod_int.analizaCodigo(inter,var)
     elif i[0] != 'var':
         if estado==1:
             tab.extend(i)
             intermedio.append(tab)
         else:
             intermedio.append(i)
+    else:
+        print('linea no utilizaada:',i)
     return noError,estado
             

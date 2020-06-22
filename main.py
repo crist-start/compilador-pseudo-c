@@ -1,7 +1,7 @@
 '''aqui colocaran la ruta para poder importar sus archivos'''
 import sys
 sys.path.append('prueba/')
-sys.path.append('analisis')
+sys.path.append('analisis/')
 sys.path.append('código intermedio/')
 sys.path.append('generación de codigo/')
 
@@ -9,7 +9,7 @@ sys.path.append('generación de codigo/')
 import an_cod_int as es
 import arbol
 import programa2 as generador
-import tokeniza as ev
+from AnalisadorSemantico import *
 
 class Variable:
     def __init__(self,idV,tipo,val,dirM):
@@ -20,36 +20,53 @@ class Variable:
 
 '''aqui usaran las funciones que importaron'''
 
-var=[Variable('a','int','0',200)
-     ,Variable('b','int','0',201)
-     ,Variable('c','int','0',202)
-     ,Variable('d','int','0',203)
-     ,Variable('e','int','0',204)
-     ,Variable('y1','int','0',205)
-     ,Variable('y2','int','0',206)
-     ,Variable('x2','int','0',207)
-     ,Variable('x','int','0',208)
-     ,Variable('y','float','0',209)
-     ]
+var=[]
+for i in tablaVar:
+    var.append(Variable(i.nombre,i.tipo,i.valor,i.direccion))
 
 sc=[]
 intermedio=[]
 
-arch=open('analisis/codigoSC.txt','r')
-
+arch=open('codigoSC.txt','r')
+print('-----------------')
 for i in arch:
-    i.replace('\n','')
-    intermedio.append(ev.tokeniza(i))
-    #intermedio.append(ev.tokeniza(i))
+    i=i.replace('\n','')
+    temp2=i.split(' ')
+    temp=[]
+    estado=0
+    cad=""
+    for j in temp2:
+        if(estado==0):
+            if j=='"':
+                estado=1
+                cad=cad+j
+            else:
+                temp.append(j)
+        else:
+            if j=='"':
+                estado=0
+                cad=cad+j
+                temp.append(cad)
+                cad=""
+            else:
+                cad=cad+j+' '
+    sc.append(temp)
 
-'''noError=True
+noError=True
 
 estado=0
+contador=0
 for i in sc:
     if noError:
         noError,estado=es.analizaCodigo(i,var,estado,noError,intermedio)
+        contador=contador+1
     else:
-        print("error")
+        print("error en linea",contador,'(',sc[contador-1],'.')
         break;
-generador.var = var
-generador.GenerarCodigo(intermedio)'''
+if noError:
+    for i in intermedio:
+        print(i)
+
+#if noError:
+#    generador.var = var
+#    generador.GenerarCodigo(intermedio)

@@ -43,6 +43,7 @@ def expresion(a=[]):
                     if a[c]==')':
                         cont=cont-1
                 exp.pop()
+                print(exp)
                 nodo.izq=expresion(exp)
                 estado=3
         elif nodo.dato in ['+','-','*','/','^']:
