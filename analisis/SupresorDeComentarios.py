@@ -1,6 +1,8 @@
 def quitaComentarios ():
     #----------- manejo de archivos --------- 
-    objeto = open("codigo.txt", "r")
+    objeto = open("codigoBueno.txt", "r")
+    #objeto = open("codigoMalo.txt", "r")
+    #objeto = open("codigoMaloSemantico.txt", "r")
     cad = ""
     #----------------------------------------
 
