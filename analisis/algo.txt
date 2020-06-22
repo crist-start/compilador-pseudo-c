@@ -1,6 +1,6 @@
  -----Tabla de Variables ----- 
-edad string "veinte" 250
-cosa int 4 251
+cosa int 4 250
+edad string "veinte" 251
 edades string "veinte menos uno" 252
 capacidad char "m" 253
 altura int 100 254

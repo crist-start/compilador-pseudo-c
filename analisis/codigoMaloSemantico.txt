@@ -44,4 +44,3 @@ simbolo = tan ( 10.5 ) ;
 }
 print ( " Hola mundo " ) ;
 end ;
-print ( " hola  " ) ;
